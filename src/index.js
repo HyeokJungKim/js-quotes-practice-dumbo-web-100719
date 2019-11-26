@@ -13,6 +13,8 @@ fetch("http://localhost:3000/quotes?_embed=likes")
 function turnObjToHTML(quoteObj){
   let quoteLi = document.createElement("li")
     quoteLi.className = "quote-card"
+    // quoteLi.dataset.keenan = 1
+    // quoteLi's dataset object looks like this: {keenan: "1"}
 
   quoteLi.innerHTML = `<blockquote class="blockquote">
       <p class="mb-0">${quoteObj.quote}</p>
@@ -24,13 +26,56 @@ function turnObjToHTML(quoteObj){
   `
 
   quoteListUL.append(quoteLi);
-//   <li class='quote-card'>
-//   <blockquote class="blockquote">
-//     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-//     <footer class="blockquote-footer">Someone famous</footer>
-//     <br>
-//     <button class='btn-success'>Likes: <span>0</span></button>
-//     <button class='btn-danger'>Delete</button>
-//   </blockquote>
-// </li>
+
+
+
+  let deleteButton = quoteLi.querySelector(".btn-danger")
+  let likeButton = quoteLi.querySelector(".btn-success")
+  let likeSpan = quoteLi.querySelector("span")
+
+  deleteButton.addEventListener("click", () => {
+
+    fetch(`http://localhost:3000/quotes/${quoteObj.id}`, {
+      method: "DELETE"
+    })
+    .then(r => r.json())
+    .then((blankObj) => {
+      quoteLi.remove()
+    })
+
+  })
+
+  likeButton.addEventListener("click", () => {
+
+    fetch('http://localhost:3000/likes', {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({
+        quoteId: quoteObj.id
+      })
+    })
+    .then(r => r.json())
+    .then((like) => {
+      quoteObj.likes.push(like) //similar to adding 1 to stuff in JS memory
+      likeSpan.innerText = quoteObj.likes.length
+    })
+
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
