@@ -52,11 +52,6 @@ function turnObjToHTML(quoteObj){
   quoteListUL.append(quoteLi)
 
 
-
-  likeButton.addEventListener("click", () => {
-    console.log(quoteObj.id);
-  })
-
   deleteButton.addEventListener("click", () => {
 
     fetch(`http://localhost:3000/quotes/${quoteObj.id}`, {
@@ -65,11 +60,29 @@ function turnObjToHTML(quoteObj){
     .then(r => r.json())
     .then((blankObj) => {
       quoteLi.remove()
-    })    
+    })
 
   })
 
+  likeButton.addEventListener("click", () => {
 
+    fetch('http://localhost:3000/likes', {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({
+        quoteId: quoteObj.id
+      })
+    })
+    .then(r => r.json())
+    .then((like) => {
+      quoteObj.likes.push(like) //similar to adding 1 to stuff in JS memory
+      likesSpan.innerText = quoteObj.likes.length
+    })
+
+  })
 
 
 
