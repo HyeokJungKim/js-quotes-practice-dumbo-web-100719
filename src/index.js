@@ -1,14 +1,41 @@
 let quoteListUL = document.querySelector("#quote-list")
+let newForm = document.querySelector("#new-quote-form")
 
 fetch("http://localhost:3000/quotes?_embed=likes")
   .then(r => r.json())
   .then((quotesArr) => {
-
+    
     quotesArr.forEach((quoteObj) => {
       turnObjToHTML(quoteObj);
     })
 
   })
+
+
+newForm.addEventListener("submit", (evt) => {
+  evt.preventDefault()
+  let newQuote = evt.target["new-quote"].value
+  let newAuthor = evt.target["author"].value
+
+  fetch("http://localhost:3000/quotes", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "accept": "application/json"
+    },
+    body: JSON.stringify({
+      quote: newQuote,
+      author: newAuthor
+    })
+  })
+  .then(r => r.json())
+  .then((quoteObj) => {
+    quoteObj.likes = []
+    turnObjToHTML(quoteObj)
+  })
+
+})
+
 
 function turnObjToHTML(quoteObj){
   let quoteLi = document.createElement("li")
@@ -64,18 +91,5 @@ function turnObjToHTML(quoteObj){
     })
 
   })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
