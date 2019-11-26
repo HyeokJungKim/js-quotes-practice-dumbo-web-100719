@@ -4,7 +4,7 @@ let newForm = document.querySelector("#new-quote-form")
 fetch("http://localhost:3000/quotes?_embed=likes")
   .then(r => r.json())
   .then((quotesArr) => {
-    
+
     quotesArr.forEach((quoteObj) => {
       turnObjToHTML(quoteObj);
     })
@@ -93,3 +93,53 @@ function turnObjToHTML(quoteObj){
   })
 
 }
+
+
+// BONUS: The things we can do with JS!
+
+let firstDiv = document.querySelector("div")
+
+let searchInput = document.createElement("input")
+searchInput.type = "text"
+searchInput.placeholder = "Write a quote"
+
+firstDiv.prepend(searchInput)
+
+searchInput.addEventListener("input", (evt) => {
+  let allQuotes = document.querySelectorAll(".quote-card")
+  let userInput = evt.target.value
+
+  allQuotes.forEach((quoteLi) => {
+
+    let text = quoteLi.querySelector("p").innerText
+
+     quoteLi.style.display = text.includes(userInput) ? "" :  "none"
+     // text.includes(userInput) ? quoteLi.style.display =  "" : quoteLi.style.display =  "none"
+
+
+   })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//

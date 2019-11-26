@@ -49,6 +49,11 @@
       "quote": "Math is cool",
       "author": "Eric",
       "id": 10
+    },
+    {
+      "quote": "Read the README twice",
+      "author": "Eric",
+      "id": 11
     }
   ],
   "likes": [
